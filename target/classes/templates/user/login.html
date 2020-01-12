@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
+<link rel="stylesheet" type="text/css" href="../../static/css/login.css" th:href="@{/css/login.css}"/>
+<script src="../../static/js/login.js" th:src="@{/js/login.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+</head>
+<body>
+    <div id="login-button">
+        <img src="https://dqcgrsy5v35b9.cloudfront.net/cruiseplanner/assets/img/icons/login-w-icon.png" onclick="showLoginForm()">
+        </img>
+    </div>
+    <div id="container">
+        <h1>Log In</h1>
+        <span class="close-btn" onclick="closeBtn()">
+          <img src="https://cdn4.iconfinder.com/data/icons/miu/22/circle_close_delete_-128.png"></img>
+        </span>
+      <div class="container">
+			  <div class="alert alert-danger" role="alert" th:if="${param.error}">
+			   The email or password is incorrect!
+  	  </div>
+        <form th:action="@{/login}" method="post">
+        
+          <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus>
+       <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+       <button type="submit">Sign in</button>
+          <div id="remember-container">
+            <input type="checkbox" id="checkbox-2-1" class="checkbox" checked="checked"/>
+            <span id="remember">Remember me</span>
+            <a id="forgotten" th:href="@{/forgotten}" >Forgotten password</a>
+            
+          </div>
+          <div id="signup">Don't have an account? <a id="signupmini" th:href="@{/signup}">Sign up</a></div>
+        </form>
+     </div>
+</body>
+</html>
