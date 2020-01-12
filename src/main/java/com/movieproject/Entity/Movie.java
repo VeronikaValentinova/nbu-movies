@@ -3,49 +3,50 @@ package com.movieproject.Entity;
 import java.sql.Date;
 import java.util.List;
 
-public class Movie {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "movies")
+public class Movie {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int filmid;
+	@Column(nullable = false, length = 300)
     private String title;
+	@Column(nullable = false)
     private String category;
+	@Column(nullable = false)
+	@ElementCollection(targetClass = String.class)
     private List<String> actors;
+	@Column(nullable = false)
     private String director;
+	@Column(nullable = false)
     private String music;
+	@Column(nullable = true)
     private Date date;
+	@Column(nullable = false)
     private String studio;
+	@Column(nullable = false)
     private String Description;
+	@Column(nullable = true)
     private int rating;
+	@Column(nullable = false)
     private String trailer;
+	@Column(nullable = true)
     private int length;
+	@Column(nullable = false)
     private String language;
+	@Column(nullable = false)
     private String countryfilmed;
+	@Column(nullable = false)
     private int imdbrating;
+	@ElementCollection
+	@Column(nullable = false)
     private List<String> keywords;
+	@Column(nullable = true)
+	@ElementCollection
     private List<String> comments;
 
-    public Movie() {}
-
-    public Movie(int filmid, String title, String category, List<String> actors, String director, String music, Date date,
-    		String studio, String Description, int rating, String trailer, int length, String language, String countryfilmed,
-    		int imdbrating,List<String> keywords) 
-    {
-    	this.filmid = filmid;
-        this.title = title;
-        this.category = category;
-        this.actors = actors;
-        this.director = director;
-        this.music = music;
-        this.date = date;
-        this.studio = studio;
-        this.Description = Description;
-        this.rating = rating;
-        this.trailer = trailer;
-        this.length = length;
-        this.language = language;
-        this.countryfilmed = countryfilmed;
-        this.imdbrating = imdbrating;
-        this.keywords = keywords;        
-    }
 
     public int getFilmid() {
         return filmid;
