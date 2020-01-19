@@ -16,7 +16,7 @@ public class MovieServiceImpl implements MovieService {
 	@Autowired
 	MovieRepository movieRepository;
 	@Override
-	public List<Movie> findAll()
+	public List<Movie> findAllMovies()
 	{
 		return movieRepository.findAll();
 	}

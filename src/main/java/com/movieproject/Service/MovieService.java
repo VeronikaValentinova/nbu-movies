@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MovieService {
 
-	List<Movie> findAll();
+	List<Movie> findAllMovies();
     Movie findById(Long id);
     Movie create(Movie post);
     Movie edit(Movie post);

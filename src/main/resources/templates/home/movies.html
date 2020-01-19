@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <title>Spring MVC Blog</title>
+</head>
+
+<body>
+
+<main id="posts">
+    <article th:each="m : ${movies}">
+    	<span>ID:</span>
+    	<a class="id" th:text="${m.category}"></a>
+        <h2 class="title" th:text="${m.Title}"></h2>
+        
+        <p class="content" th:utext="${m.rating}"></p>
+    </article>
+</main>
+
+</body>
+
+</html>

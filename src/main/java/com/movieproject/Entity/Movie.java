@@ -12,12 +12,9 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int filmid;
 	@Column(nullable = false, length = 300)
-    private String title;
+    private String Title;
 	@Column(nullable = false)
     private String category;
-	@Column(nullable = false)
-	@ElementCollection(targetClass = String.class)
-    private List<String> actors;
 	@Column(nullable = false)
     private String director;
 	@Column(nullable = false)
@@ -40,13 +37,16 @@ public class Movie {
     private String countryfilmed;
 	@Column(nullable = false)
     private int imdbrating;
-	@ElementCollection
-	@Column(nullable = false)
-    private List<String> keywords;
-	@Column(nullable = true)
-	@ElementCollection
-    private List<String> comments;
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="movie")
+    private List<MovieComment> comments;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="movie")
+	private List<MovieActor> actors;
 
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="movie")
+	private List<MovieKeyword> keywords;
 
     public int getFilmid() {
         return filmid;
@@ -57,11 +57,11 @@ public class Movie {
     }
     
     public String getTitle() {
-        return title;
+        return Title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.Title = title;
     }
     
     public String getCategory() {
@@ -70,10 +70,6 @@ public class Movie {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-    
-    public List<String> getActors() {
-        return actors;
     }
 
     public String getDirector() {
@@ -164,11 +160,8 @@ public class Movie {
         this.imdbrating = imdbrating;
     }
     
-    public List<String> getKeywords() {
-        return keywords;
-    }
     
-    public List<String> getComments() {
+    public List<MovieComment> getComments() {
         return comments;
     }
 }
