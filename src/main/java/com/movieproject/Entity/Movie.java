@@ -164,4 +164,12 @@ public class Movie {
     public List<MovieComment> getComments() {
         return comments;
     }
+
+    public List<MovieActor> getActors() {
+        return actors;
+    }
+
+    public List<MovieKeyword> getKeywords() {
+        return keywords;
+    }
 }
