@@ -37,15 +37,15 @@ public class UserController {
   return model;
  }
  
-// @RequestMapping(value= {"/signup"}, method=RequestMethod.GET)
-// public ModelAndView signup() {
-//  ModelAndView model = new ModelAndView();
-//  User user = new User();
-//  model.addObject("user", user);
-//  model.setViewName("user/signup");
-//
-//  return model;
-// }
+ @RequestMapping(value= {"/signup"}, method=RequestMethod.GET)
+ public ModelAndView signup() {
+  ModelAndView model = new ModelAndView();
+  User user = new User();
+  model.addObject("user", user);
+  model.setViewName("user/signup");
+
+  return model;
+ }
  
  @RequestMapping(value= {"/signup"}, method=RequestMethod.POST)
  public ModelAndView createUser(@Valid User user, BindingResult bindingResult) {
