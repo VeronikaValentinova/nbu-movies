@@ -2,9 +2,11 @@ package com.movieproject.Controller;
 
 import javax.validation.Valid;
 
+import com.movieproject.Service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ import com.movieproject.Service.UserService;
 public class UserController {
 
  @Autowired
- private UserService userService;
+ private UserServiceImpl userService;
  
  @RequestMapping(value= {"/", "/login"}, method=RequestMethod.GET)
  public ModelAndView login() {
@@ -35,15 +37,15 @@ public class UserController {
   return model;
  }
  
- @RequestMapping(value= {"/signup"}, method=RequestMethod.GET)
- public ModelAndView signup() {
-  ModelAndView model = new ModelAndView();
-  User user = new User();
-  model.addObject("user", user);
-  model.setViewName("user/signup");
-  
-  return model;
- }
+// @RequestMapping(value= {"/signup"}, method=RequestMethod.GET)
+// public ModelAndView signup() {
+//  ModelAndView model = new ModelAndView();
+//  User user = new User();
+//  model.addObject("user", user);
+//  model.setViewName("user/signup");
+//
+//  return model;
+// }
  
  @RequestMapping(value= {"/signup"}, method=RequestMethod.POST)
  public ModelAndView createUser(@Valid User user, BindingResult bindingResult) {

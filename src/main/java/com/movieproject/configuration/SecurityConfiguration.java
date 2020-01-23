@@ -2,15 +2,18 @@ package com.movieproject.configuration;
 
 import javax.sql.DataSource;
 
+import com.movieproject.Service.UserServiceImpl;
+import com.movieproject.security.JWTAuthenticationFilter;
+import com.movieproject.security.JWTAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -22,7 +25,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
  @Autowired
  private BCryptPasswordEncoder bCryptPasswordEncoder;
- 
+ private UserServiceImpl userService;
+
+ public SecurityConfiguration(BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceImpl userSer) {
+  this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+  this.userService = userSer;
+ }
+
  @Autowired
  private DataSource dataSource;
  
@@ -31,10 +40,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
  @Override
  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-  auth.jdbcAuthentication()
-   .usersByUsernameQuery(USERS_QUERY)
-   .authoritiesByUsernameQuery(ROLES_QUERY)
-   .dataSource(dataSource)
+  auth.userDetailsService(userService)
+//   .usersByUsernameQuery(USERS_QUERY)
+//   .authoritiesByUsernameQuery(ROLES_QUERY)
+//   .dataSource(dataSource)
    .passwordEncoder(bCryptPasswordEncoder);
  }
  
@@ -64,7 +73,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
    .and().rememberMe()
    .tokenRepository(persistentTokenRepository())
    .tokenValiditySeconds(60*60)
-   .and().exceptionHandling().accessDeniedPage("/access_denied");
+   .and().exceptionHandling().accessDeniedPage("/access_denied")
+     .and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
+             .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);;
  }
  
  @Bean
