@@ -86,6 +86,11 @@ public class Controller {
 		return userService.getLanguages();
 	}
 
+	@GetMapping("/home/users/user/token") // NEW
+	public ResponseEntity<String> checkActiveToken(@RequestHeader("Authorization") String token) {
+		return userService.checkActiveToken(token);
+	}
+
 
 	/*****************************************************************************
 	 *
@@ -118,7 +123,7 @@ public class Controller {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete failed!");
 	}
-	@PostMapping("/home/movies/movie/add")
+	@PostMapping("/home/movies/movie/add") // NEW
 	public ResponseEntity<?> addMovie(@RequestBody Movie movie) {
 		return userService.addMovie(movie);
 	}

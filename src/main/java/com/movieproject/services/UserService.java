@@ -151,7 +151,6 @@ public class UserService {
 		List<String> l = getDao.checkFreeUser(email);
 		if (l.isEmpty()) {
 			postDao.saveUser(email, pass, username);
-			System.out.println("Tuka");
 			return ResponseEntity.status(HttpStatus.OK).build();
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists!");
@@ -174,5 +173,14 @@ public class UserService {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Adding movie failed");
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).body("Movie already exists!");
+	}
+
+	public ResponseEntity<String> checkActiveToken(String token) {
+		if (token == null)
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		boolean tokenActive = securityService.getUserId(token) != -1;
+		if (tokenActive)
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
 }
