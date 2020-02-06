@@ -353,4 +353,19 @@ public class GetDao extends JdbcDaoSupport {
         final String sql = "SELECT MAX(movie_id) as id FROM movies";
         return namedTemplate.query(sql, new MapSqlParameterSource(), (r, i) -> r.getInt("id"));
     }
+
+    public List<Movie> getMovieByTitleAndYear(String title, String date) {
+        final String sql = "SELECT * FROM movies WHERE Title = :title AND dateOfCreation = :dateOfCreation";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("title", title)
+                .addValue("dateOfCreation", date);
+        return namedTemplate.query(sql, params, (r, i) -> {
+            Movie existing = new Movie();
+            existing.setTitle(r.getString("title"));
+            existing.setDateOfCreation(r.getString("dateOfCreation"));
+            return existing;
+        });
+
+    }
 }

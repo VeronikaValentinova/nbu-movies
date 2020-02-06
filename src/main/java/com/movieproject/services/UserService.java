@@ -166,7 +166,7 @@ public class UserService {
 		if (!movieIds.isEmpty())
 			movieId = movieIds.get(0) + 1;
 
-		List<Movie> mList = getDao.getMovieInfo(movieId);
+		List<Movie> mList = getDao.getMovieByTitleAndYear(movie.getTitle(), movie.getDateOfCreation());
 		if (mList.isEmpty()) {
 			if (postDao.addMovie(movie) == 1)
 				return ResponseEntity.status(HttpStatus.OK).body(String.valueOf(movieId));
