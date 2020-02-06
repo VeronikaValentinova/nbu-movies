@@ -91,6 +91,12 @@ public class Controller {
 		return userService.checkActiveToken(token);
 	}
 
+	@GetMapping("/home/movies/movie/check") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> checkExistingMovie(@RequestHeader("Authorization") String token, @RequestBody Movie movie) {
+		return userService.checkExistingMovie(movie);
+	}
+
 
 	/*****************************************************************************
 	 *

@@ -183,4 +183,11 @@ public class UserService {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
+
+	public ResponseEntity<String> checkExistingMovie(Movie movie) {
+		List<Movie> mList = getDao.getMovieByTitleAndYear(movie.getTitle(), movie.getDateOfCreation());
+		if (mList.isEmpty())
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
 }

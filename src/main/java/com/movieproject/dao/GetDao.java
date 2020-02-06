@@ -296,14 +296,17 @@ public class GetDao extends JdbcDaoSupport {
 
     public List<Event> getAllEvents() {
         //@formatter:off
-        String sql = "SELECT e.event_id, e.name, e.user_id, e.date, e.place " +
-                     "  FROM events e ORDER BY event_id                     ";
+        String sql = "SELECT e.event_id, m.title, e.user_id, e.date, e.place " +
+                "  FROM events e, movies m                               " +
+                " WHERE 1 = 1                                           " +
+                "   AND e.movie_id = m.movie_id                         " +
+                " ORDER BY event_id                                     ";
         //@formatter:on
         return namedTemplate.query(sql, new MapSqlParameterSource(), (r, i) -> {
             Event e = new Event();
             e.setEvent_id(r.getInt("event_id"));
             e.setUser_id(r.getInt("user_id"));
-            e.setName(r.getString("name"));
+            e.setName(r.getString("title"));
             e.setDate(r.getString("date"));
             e.setPlace(r.getString("place"));
             return e;
