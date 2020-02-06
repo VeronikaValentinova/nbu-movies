@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -105,11 +106,18 @@ public class Controller {
 	 ****************************************************************************/
 
 
-	@PostMapping("/home/movies/wishList/add")
+	@PostMapping("/home/movies/wishList/add") // NEW
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
-	public void addMovieToWishList(@RequestHeader("Authorization") String token, @RequestBody() String title) {
-		userService.addMovieToWishList(token, title);
+	public ResponseEntity<String> addMovieToWishList(@RequestHeader("Authorization") String token, @RequestBody() Integer movie_id) {
+		return userService.addMovieToWishList(token, movie_id);
 	}
+
+	@PostMapping("/home/movies/watchedList/add") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> addMovieToWatchedList(@RequestHeader("Authorization") String token, @RequestBody() Integer movie_id) {
+		return userService.addMovieToWatchedList(token, movie_id);
+	}
+
 
 	@PostMapping("/home/movies/movie/comment/add")
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
@@ -129,8 +137,16 @@ public class Controller {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete failed!");
 	}
+
 	@PostMapping("/home/movies/movie/add") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
 	public ResponseEntity<?> addMovie(@RequestBody Movie movie) {
 		return userService.addMovie(movie);
+	}
+
+	@PostMapping("/home/movies/movie/add/poster") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> addMoviePoster(@RequestPart String title, @RequestPart MultipartFile file) {
+		return userService.addMoviePoster(title, file);
 	}
 }

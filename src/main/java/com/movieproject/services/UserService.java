@@ -9,7 +9,11 @@ import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -136,8 +140,14 @@ public class UserService {
 
 
 
-	public void addMovieToWishList(String token, String title) {
-		postDao.addMovieToWishList(securityService.getUserId(token), title);
+	public ResponseEntity<String> addMovieToWishList(String token, Integer movie_id) {
+		List<Movie> movies = getUserWishList(token);
+		for (Movie m : movies) {
+			if (m.getMovie_id().equals(movie_id))
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("Movie already in wishlist");
+		}
+		postDao.addMovieToWishList(securityService.getUserId(token), movie_id);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	public void saveMovieComment(String token, Comment comment) throws ParseException {
@@ -189,5 +199,29 @@ public class UserService {
 		if (mList.isEmpty())
 			return ResponseEntity.status(HttpStatus.OK).build();
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<String> addMovieToWatchedList(String token, Integer movie_id) {
+		List<Movie> watchedMovies = getUserWatchedList(token);
+		for (Movie m : watchedMovies) {
+			if (m.getMovie_id().equals(movie_id))
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("Movie already in watchlist");
+		}
+		postDao.addMovieToWatchedList(securityService.getUserId(token), movie_id);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	public ResponseEntity<String> addMoviePoster(String title, MultipartFile file) {
+		final Path loc  = Paths.get("/static/images/");
+		try {
+			try {
+				Files.copy(file.getInputStream(), loc.resolve(title));
+			} catch (Exception e) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("Image upload failed");
+			}
+			return ResponseEntity.status(HttpStatus.OK).build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Image upload failed");
+		}
 	}
 }

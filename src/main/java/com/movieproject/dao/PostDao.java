@@ -50,15 +50,15 @@ public class PostDao {
         return namedTemplate.update(sql, paramMap);
     }
 
-    public void addMovieToWishList(Integer user_id, String title) {
+    public void addMovieToWishList(Integer user_id, Integer movie_id) {
         //@formatter:off
-        final String sql = "INSERT INTO  wished_movies (user_id, movie_id)            "
-                         + " SELECT :user_id, movie_id FROM movies WHERE title = :title ";
+        final String sql = "INSERT INTO  wished_movies (user_id, movie_id)           "
+                + " SELECT :user_id, movie_id FROM movies WHERE movie_id = :movie_id ";
         //@formatter:on
 
         MapSqlParameterSource paramMap = new MapSqlParameterSource()
                 .addValue("user_id", user_id)
-                .addValue("title", title);
+                .addValue("movie_id", movie_id);
         namedTemplate.update(sql, paramMap);
     }
 
@@ -94,5 +94,17 @@ public class PostDao {
         MapSqlParameterSource paramMap = new MapSqlParameterSource()
                 .addValue("event_id", event_id);
         return namedTemplate.update(sql, paramMap);
+    }
+
+    public void addMovieToWatchedList(Integer user_id, Integer movie_id) {
+        //@formatter:off
+        final String sql = "INSERT INTO  watched_movies (user_id, movie_id)          "
+                + " SELECT :user_id, movie_id FROM movies WHERE movie_id = :movie_id ";
+        //@formatter:on
+
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("user_id", user_id)
+                .addValue("movie_id", movie_id);
+        namedTemplate.update(sql, paramMap);
     }
 }
