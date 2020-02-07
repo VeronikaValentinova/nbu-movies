@@ -98,6 +98,12 @@ public class Controller {
 		return userService.checkExistingMovie(movie);
 	}
 
+	@GetMapping("/home/movies/movie/wishlist/count")
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<Integer> wishlistsContainingMovieNum(@RequestBody Movie movie) {
+		return userService.wishlistsContainingMovieNum(movie);
+	}
+
 
 	/*****************************************************************************
 	 *

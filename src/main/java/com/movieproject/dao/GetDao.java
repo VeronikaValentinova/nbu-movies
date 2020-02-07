@@ -388,4 +388,11 @@ public class GetDao extends JdbcDaoSupport {
             return user;
         });
     }
+
+    public List<Integer> getWishlistUserIdsByMovieId(Integer movieId) {
+        final String sql = "SELECT user_id FROM wished_movies WHERE movie_id = :id";
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", movieId);
+        return namedTemplate.query(sql, params, (r, i) -> r.getInt("user_id"));
+    }
 }

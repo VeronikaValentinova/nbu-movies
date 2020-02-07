@@ -5,7 +5,6 @@ import com.movieproject.dao.PostDao;
 import com.movieproject.dao.GetDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,10 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -232,5 +228,11 @@ public class UserService {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Image upload failed");
 		}
+	}
+
+	public ResponseEntity<Integer> wishlistsContainingMovieNum(Movie movie) {
+		Integer movieId = movie.getMovie_id();
+		List<Integer> wishlistUserIds = getDao.getWishlistUserIdsByMovieId(movieId);
+		return ResponseEntity.status(HttpStatus.OK).body(wishlistUserIds.size());
 	}
 }
