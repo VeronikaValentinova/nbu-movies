@@ -161,7 +161,16 @@ public class UserService {
 		List<String> l = getDao.checkFreeUser(email);
 		if (l.isEmpty()) {
 			postDao.saveUser(email, pass, username);
-			return ResponseEntity.status(HttpStatus.OK).build();
+			List<Integer> latestUserId = getDao.getMostRecentUserId();
+			int id = 0;
+			if (!latestUserId.isEmpty())
+				id = latestUserId.get(0);
+			List<User> newUser = getDao.getUserById(id);
+			if (newUser.isEmpty())
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("User not signed up!");
+			if (postDao.setUserRole(newUser.get(0).getId()) == 1)
+				return ResponseEntity.status(HttpStatus.OK).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("User not signed up!");
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists!");
 	}

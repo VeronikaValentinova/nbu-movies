@@ -371,4 +371,21 @@ public class GetDao extends JdbcDaoSupport {
         });
 
     }
+
+    public List<Integer> getMostRecentUserId() {
+        final String sql = "SELECT MAX(id) as id FROM user";
+        return namedTemplate.query(sql, new MapSqlParameterSource(), (r, i) -> r.getInt("id"));
+    }
+
+    public List<User> getUserById(int id) {
+        final String sql = "SELECT * FROM user WHERE id = :id";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id);
+        return namedTemplate.query(sql, params, (r, i) -> {
+            User user = new User();
+            user.setId(r.getInt("id"));
+            return user;
+        });
+    }
 }

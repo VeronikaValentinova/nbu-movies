@@ -107,4 +107,17 @@ public class PostDao {
                 .addValue("movie_id", movie_id);
         namedTemplate.update(sql, paramMap);
     }
+
+    public int setUserRole(Integer user_id) {
+        Integer roleId = 2; //role USER = 2, role ADMIN = 1 !
+        final String sql = "INSERT INTO user_role (user_id, role_id) " +
+                "VALUES(:user_id, :role_id)";
+
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("user_id", user_id)
+                .addValue("role_id", roleId);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+
 }
