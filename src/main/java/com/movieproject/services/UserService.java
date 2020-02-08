@@ -30,9 +30,13 @@ public class UserService {
 		this.postDao = postDao;
 	}
 
-	public ResponseEntity<?> login(String email, String pass) {
+	public ResponseEntity<?> login(String emailOrUsername, String pass) {
 		List<User> usList;
-		usList = getDao.getUserRole(email, pass);
+		usList = getDao.getUserRole(emailOrUsername, pass);
+
+		if (usList == null || usList.isEmpty())
+			usList = getDao.getUserRoleByUsername(emailOrUsername, pass);
+
 		if (!usList.isEmpty()) {
 			User user = usList.get(0);
 
@@ -312,6 +316,15 @@ public class UserService {
 		Integer userId = securityService.getUserId(token);
 		if (!getDao.isMovieInUserWatchedlist(movieId, userId).isEmpty())
 			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<String> changePassword(String token, String password) {
+		Integer userId = securityService.getUserId(token);
+		if (userId != null) {
+			if (postDao.changePassword(userId, password) == 1);
+				return ResponseEntity.status(HttpStatus.OK).build();
+		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
 }

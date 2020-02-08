@@ -56,6 +56,30 @@ public class GetDao extends JdbcDaoSupport {
         });
     }
 
+    public List<User> getUserRoleByUsername(String username, String pass){
+        //@formatter:off
+        String sql = "SELECT r.role, u.id, u.username    " +
+                "  FROM role r, user u, user_role ur " +
+                " WHERE 1 = 1                        " +
+                "   AND r.role_id = ur.role_id       " +
+                "   AND u.id = ur.user_id            " +
+                "   AND u.password = :pass           " +
+                "   AND u.username = :username             ";
+        //@formatter:on
+
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("username", username)
+                .addValue("pass", pass);
+
+        return namedTemplate.query(sql, sp, (r, i)-> {
+            User u = new User();
+            u.setId(r.getInt("id"));
+            u.setRole(r.getString("role"));
+            u.setName(r.getString("username"));
+            return u;
+        });
+    }
+
     public List<Movie> getAllMovies() {
         //@formatter:off
         String sql = "SELECT movie_id          " +

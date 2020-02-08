@@ -194,4 +194,12 @@ public class PostDao {
                 .addValue("movie_id", movie_id);
         return namedTemplate.update(sql, paramMap);
     }
+
+    public int changePassword(Integer userId, String password) {
+        final String sql = "UPDATE user SET password = :password WHERE id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("password", password)
+                .addValue("id", userId);
+        return namedTemplate.update(sql, paramMap);
+    }
 }

@@ -179,4 +179,10 @@ public class Controller {
 	public ResponseEntity<String> addMoviePoster(@RequestPart String title, @RequestPart MultipartFile file) {
 		return userService.addMoviePoster(title, file);
 	}
+
+	@PostMapping("/home/users/user/changepass") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> changePassword(@RequestHeader("Authorization") String token, @RequestPart String password) {
+		return userService.changePassword(token, password);
+	}
 }
