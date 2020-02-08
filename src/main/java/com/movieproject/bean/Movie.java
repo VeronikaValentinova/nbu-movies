@@ -23,6 +23,7 @@ public class Movie {
     private List<String> mainActors;
     private List<String> awards;
     private List<Comment> comments;
+    private List<String> keywords;
 
     public Integer getMovie_id() {
         return movie_id;
@@ -182,5 +183,13 @@ public class Movie {
 
     public void setAwards(List<String> awards) {
         this.awards = awards;
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
     }
 }

@@ -183,11 +183,64 @@ public class UserService {
 
 		List<Movie> mList = getDao.getMovieByTitleAndYear(movie.getTitle(), movie.getDateOfCreation());
 		if (mList.isEmpty()) {
-			if (postDao.addMovie(movie) == 1)
+			if (postDao.addMovie(movie) == 1) {
+				addAwards(movie);
+				addActors(movie);
+				//addComments(movie); not sure if this is needed, there shouldn't be any comments when adding a movie
+				addKeywords(movie);
+				addMainActors(movie);
 				return ResponseEntity.status(HttpStatus.OK).body(String.valueOf(movieId));
+			}
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Adding movie failed");
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).body("Movie already exists!");
+	}
+
+	private void addMainActors(Movie movie) {
+		List<String> mainActors = movie.getMainActors();
+		if (mainActors.isEmpty())
+			return;
+		for (String s : mainActors) {
+			postDao.addMovieMainActor(s, movie.getMovie_id());
+		}
+	}
+
+	private void addKeywords(Movie movie) {
+		List<String> keywords = movie.getKeywords();
+		if (keywords.isEmpty())
+			return;
+		for (String s : keywords) {
+			postDao.addMovieKeyword(s, movie.getMovie_id());
+		}
+	}
+
+	//MAYBE not needed
+
+//	private void addComments(Movie movie) {
+//		List<Comment> comments = movie.getComments();
+//		if (comments.isEmpty())
+//			return;
+//		for (Comment c : comments) {
+//			postDao.addMovieComment(c, movie.getMovie_id());
+//		}
+//	}
+
+	private void addActors(Movie movie) {
+		List<String> actors = movie.getActors();
+		if (actors.isEmpty())
+			return;
+		for (String actor : actors) {
+			postDao.addMovieActor(actor, movie.getMovie_id());
+		}
+	}
+
+	private void addAwards(Movie movie) {
+		List<String> awards = movie.getAwards();
+		if (awards.isEmpty())
+			return;
+		for (String award : awards) {
+			postDao.addMovieAward(award, movie.getMovie_id());
+		}
 	}
 
 	public ResponseEntity<String> checkActiveToken(String token) {
@@ -230,9 +283,33 @@ public class UserService {
 		}
 	}
 
-	public ResponseEntity<Integer> wishlistsContainingMovieNum(Movie movie) {
-		Integer movieId = movie.getMovie_id();
+	public ResponseEntity<Integer> wishlistsContainingMovieNum(Integer movieId) {
 		List<Integer> wishlistUserIds = getDao.getWishlistUserIdsByMovieId(movieId);
 		return ResponseEntity.status(HttpStatus.OK).body(wishlistUserIds.size());
+	}
+
+
+	public ResponseEntity<String> removeMovieFromWatchedList(String token, Integer movie_id) {
+		if (postDao.removeMovieFromWatchedList(movie_id) == 1)
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<String> removeMovieFromWishList(String token, Integer movie_id) {
+		if (postDao.removeMovieFromWishList(movie_id) == 1)
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<Integer> isMovieInUserWishlist(Integer movieId) {
+		if (!getDao.isMovieInUserWishlist(movieId).isEmpty())
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<Integer> isMovieInUserWatchedlist(Integer movieId) {
+		if (!getDao.isMovieInUserWatchedlist(movieId).isEmpty())
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
 }

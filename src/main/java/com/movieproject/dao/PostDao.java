@@ -120,4 +120,66 @@ public class PostDao {
     }
 
 
+    public int removeMovieFromWishList(Integer movie_id) {
+        final String sql = "DELETE FROM wished_movies WHERE movie_id = :movie_id ";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("movie_id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int removeMovieFromWatchedList(Integer movie_id) {
+        final String sql = "DELETE FROM watched_movies WHERE movie_id = :movie_id ";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("movie_id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int addMovieAward(String award, Integer movieId) {
+        final String sql = "INSERT INTO  movie_awards (award, movie_id)           "
+                + " VALUES (:award, :movie_id) ";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("award", award)
+                .addValue("movie_id", movieId);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int addMovieMainActor(String actor, Integer movie_id) {
+        final String sql = "INSERT INTO  movie_mainactors (actor, movie_id)           "
+                + " VALUES (:actor, :movie_id) ";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("actor", actor)
+                .addValue("movie_id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int addMovieKeyword(String keyword, Integer movie_id) {
+        final String sql = "INSERT INTO  movie_keywords (keyword, movie_id)           "
+                + " VALUES (:keyword, :movie_id) ";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("keyword", keyword)
+                .addValue("movie_id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    //MAYBE not needed
+
+//    public int addMovieComment(Comment comment, Integer movie_id) {
+//        final String sql = "INSERT INTO  movie_comments (comment, movie_id, user_id, date)           "
+//                + " VALUES (:comment, :movie_id, :user_id, :date) ";
+//        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+//                .addValue("comment", comment.getComment())
+//                .addValue("movie_id", movie_id)
+//                .addValue("user_id", comment.getUser_id())
+//                .addValue("date", comment.getDate());
+//        return namedTemplate.update(sql, paramMap);
+//    }
+
+    public int addMovieActor(String actor, Integer movie_id) {
+        final String sql = "INSERT INTO  movie_actors (actor, movie_id)           "
+                + " VALUES (:actor, :movie_id) ";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("actor", actor)
+                .addValue("movie_id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
 }

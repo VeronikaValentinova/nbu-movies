@@ -100,8 +100,20 @@ public class Controller {
 
 	@GetMapping("/home/movies/movie/wishlist/count")
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
-	public ResponseEntity<Integer> wishlistsContainingMovieNum(@RequestBody Movie movie) {
-		return userService.wishlistsContainingMovieNum(movie);
+	public ResponseEntity<Integer> wishlistsContainingMovieNum(@RequestParam Integer movieId) {
+		return userService.wishlistsContainingMovieNum(movieId);
+	}
+
+	@GetMapping("/home/movies/movie/wished") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<Integer> isMovieInUserWishlist(@RequestParam Integer movieId) {
+		return userService.isMovieInUserWishlist(movieId);
+	}
+
+	@GetMapping("/home/movies/movie/watched") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<Integer> isMovieInUserWatchedlist(@RequestParam Integer movieId) {
+		return userService.isMovieInUserWatchedlist(movieId);
 	}
 
 
@@ -122,6 +134,18 @@ public class Controller {
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
 	public ResponseEntity<String> addMovieToWatchedList(@RequestHeader("Authorization") String token, @RequestBody() Integer movie_id) {
 		return userService.addMovieToWatchedList(token, movie_id);
+	}
+
+	@PostMapping("/home/movies/wishList/remove") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> removeMovieFromWishList(@RequestHeader("Authorization") String token, @RequestBody() Integer movie_id) {
+		return userService.removeMovieFromWishList(token, movie_id);
+	}
+
+	@PostMapping("/home/movies/watchedList/remove") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> removeMovieToWatchedList(@RequestHeader("Authorization") String token, @RequestBody() Integer movie_id) {
+		return userService.removeMovieFromWatchedList(token, movie_id);
 	}
 
 
