@@ -327,4 +327,25 @@ public class UserService {
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
+
+	public ResponseEntity<String> archiveOrRestoreUser(String token, Integer param) {
+		Integer userId = securityService.getUserId(token);
+		if (userId != null) {
+			if (postDao.archiveOrRestoreUser(userId, param) == 1);
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<String> archiveOrRestoreCategory(String category, Integer param) {
+		if (postDao.archiveOrRestoreCategory(category, param) == 1)
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<String> archiveOrRestoreMovie(Integer movie_id, Integer param) {
+		if (postDao.archiveOrRestoreMovie(movie_id, param) == 1)
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
 }

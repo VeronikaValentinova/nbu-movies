@@ -202,4 +202,28 @@ public class PostDao {
                 .addValue("id", userId);
         return namedTemplate.update(sql, paramMap);
     }
+
+    public int archiveOrRestoreUser(Integer userId, Integer param) {
+        final String sql = "UPDATE user SET archived = :archived WHERE id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("archived", param)
+                .addValue("id", userId);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int archiveOrRestoreCategory(String category, Integer param) {
+        final String sql = "UPDATE category SET archived = :archived WHERE category = :category";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("archived", param)
+                .addValue("category", category);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int archiveOrRestoreMovie(Integer movie_id, Integer param) {
+        final String sql = "UPDATE movies SET archived = :archived WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("archived", param)
+                .addValue("id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
 }

@@ -185,4 +185,40 @@ public class Controller {
 	public ResponseEntity<String> changePassword(@RequestHeader("Authorization") String token, @RequestPart String password) {
 		return userService.changePassword(token, password);
 	}
+
+	@PostMapping("home/users/archive") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> archiveUser(@RequestHeader("Authorization") String token) {
+		return userService.archiveOrRestoreUser(token, 1);
+	}
+
+	@PostMapping("/home/categories/archive") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> archiveCategory(@RequestPart String category) {
+		return userService.archiveOrRestoreCategory(category, 1);
+	}
+
+	@PostMapping("/home/movie/archive") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> archiveMovie(@RequestPart Integer movie_id) {
+		return userService.archiveOrRestoreMovie(movie_id, 1);
+	}
+
+	@PostMapping("home/users/restore") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> restoreUser(@RequestHeader("Authorization") String token) {
+		return userService.archiveOrRestoreUser(token, 0);
+	}
+
+	@PostMapping("/home/categories/restore") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> restoreCategory(@RequestPart String category) {
+		return userService.archiveOrRestoreCategory(category, 0);
+	}
+
+	@PostMapping("/home/movie/restore") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> restoreMovie(@RequestPart Integer movie_id) {
+		return userService.archiveOrRestoreMovie(movie_id, 0);
+	}
 }
