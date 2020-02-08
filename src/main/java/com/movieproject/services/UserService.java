@@ -301,14 +301,16 @@ public class UserService {
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
 
-	public ResponseEntity<Integer> isMovieInUserWishlist(Integer movieId) {
-		if (!getDao.isMovieInUserWishlist(movieId).isEmpty())
+	public ResponseEntity<Integer> isMovieInUserWishlist(Integer movieId, String token) {
+		Integer userId = securityService.getUserId(token);
+		if (!getDao.isMovieInUserWishlist(movieId, userId).isEmpty())
 			return ResponseEntity.status(HttpStatus.OK).build();
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
 
-	public ResponseEntity<Integer> isMovieInUserWatchedlist(Integer movieId) {
-		if (!getDao.isMovieInUserWatchedlist(movieId).isEmpty())
+	public ResponseEntity<Integer> isMovieInUserWatchedlist(Integer movieId, String token) {
+		Integer userId = securityService.getUserId(token);
+		if (!getDao.isMovieInUserWatchedlist(movieId, userId).isEmpty())
 			return ResponseEntity.status(HttpStatus.OK).build();
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}

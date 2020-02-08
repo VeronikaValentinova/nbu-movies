@@ -106,14 +106,14 @@ public class Controller {
 
 	@GetMapping("/home/movies/movie/wished") // NEW
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
-	public ResponseEntity<Integer> isMovieInUserWishlist(@RequestParam Integer movieId) {
-		return userService.isMovieInUserWishlist(movieId);
+	public ResponseEntity<Integer> isMovieInUserWishlist(@RequestHeader("Authorization") String token, @RequestParam Integer movieId) {
+		return userService.isMovieInUserWishlist(movieId, token);
 	}
 
 	@GetMapping("/home/movies/movie/watched") // NEW
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
-	public ResponseEntity<Integer> isMovieInUserWatchedlist(@RequestParam Integer movieId) {
-		return userService.isMovieInUserWatchedlist(movieId);
+	public ResponseEntity<Integer> isMovieInUserWatchedlist(@RequestHeader("Authorization") String token, @RequestParam Integer movieId) {
+		return userService.isMovieInUserWatchedlist(movieId, token);
 	}
 
 
