@@ -100,20 +100,20 @@ public class Controller {
 
 	@GetMapping("/home/movies/movie/wishlist/count")
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
-	public ResponseEntity<Integer> wishlistsContainingMovieNum(@RequestParam Integer movieId) {
-		return userService.wishlistsContainingMovieNum(movieId);
+	public ResponseEntity<Integer> wishlistsContainingMovieNum(@RequestParam Integer movie_id) {
+		return userService.wishlistsContainingMovieNum(movie_id);
 	}
 
 	@GetMapping("/home/movies/movie/wished") // NEW
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
-	public ResponseEntity<Integer> isMovieInUserWishlist(@RequestHeader("Authorization") String token, @RequestParam Integer movieId) {
-		return userService.isMovieInUserWishlist(movieId, token);
+	public ResponseEntity<Integer> isMovieInUserWishlist(@RequestHeader("Authorization") String token, @RequestParam Integer movie_id) {
+		return userService.isMovieInUserWishlist(movie_id, token);
 	}
 
 	@GetMapping("/home/movies/movie/watched") // NEW
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
-	public ResponseEntity<Integer> isMovieInUserWatchedlist(@RequestHeader("Authorization") String token, @RequestParam Integer movieId) {
-		return userService.isMovieInUserWatchedlist(movieId, token);
+	public ResponseEntity<Integer> isMovieInUserWatchedlist(@RequestHeader("Authorization") String token, @RequestParam Integer movie_id) {
+		return userService.isMovieInUserWatchedlist(movie_id, token);
 	}
 
 

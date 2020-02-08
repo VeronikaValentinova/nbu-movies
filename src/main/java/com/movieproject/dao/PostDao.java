@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.text.ParseException;
 
 @Repository
 public class PostDao {
@@ -30,12 +31,23 @@ public class PostDao {
                 "values (:Title, :category, :director, :music, :dateOfCreation, :studio, " +
                 ":Description, :rating, :trailer, :language, :country, :imdbrating, :poster, :countryOfShooting, :duration)";
 
+        String date = m.getDateOfCreation();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date dt = null;
+        try {
+            dt = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+        String currentTime = sdf.format(dt);
+
         MapSqlParameterSource paramMap = new MapSqlParameterSource()
                 .addValue("Title", m.getTitle())
                 .addValue("category", m.getCategory())
                 .addValue("director", m.getDirector())
                 .addValue("music", m.getMusic())
-                .addValue("dateOfCreation", m.getDateOfCreation())
+                .addValue("dateOfCreation", currentTime)
                 .addValue("studio", m.getStudio())
                 .addValue("Description", m.getDescription())
                 .addValue("rating", m.getRating())
