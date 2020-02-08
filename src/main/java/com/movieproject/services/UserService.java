@@ -159,7 +159,8 @@ public class UserService {
 
 	public ResponseEntity<String> saveUser(String email, String pass, String username) {
 		List<String> l = getDao.checkFreeUser(email);
-		if (l.isEmpty()) {
+		List<String> l1 =  getDao.checkFreeUserByUsername(username);
+		if (l1.isEmpty() && l.isEmpty()) {
 			postDao.saveUser(email, pass, username);
 			List<Integer> latestUserId = getDao.getMostRecentUserId();
 			int id = 0;

@@ -435,4 +435,16 @@ public class GetDao extends JdbcDaoSupport {
                 .addValue("user_id", userId);
         return namedTemplate.query(sql, params, (r, i) -> r.getInt("movie_id"));
     }
+
+    public List<String> checkFreeUserByUsername(String username) {
+        //@formatter:off
+        String sql = "SELECT username          " +
+                " FROM user            " +
+                "WHERE username = :username; ";
+        //@formatter:on
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("username", username);
+
+        return namedTemplate.query(sql, sp, (r, i) -> r.getString("username"));
+    }
 }
