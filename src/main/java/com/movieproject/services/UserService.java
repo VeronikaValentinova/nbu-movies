@@ -209,6 +209,7 @@ public class UserService {
 		List<Movie> mList = getDao.getMovieByTitleAndYear(movie.getTitle(), movie.getDateOfCreation());
 		if (mList.isEmpty()) {
 			if (postDao.addMovie(movie) == 1) {
+				movie.setMovie_id(movieId);
 				addAwards(movie);
 				addActors(movie);
 				//addComments(movie); not sure if this is needed, there shouldn't be any comments when adding a movie
