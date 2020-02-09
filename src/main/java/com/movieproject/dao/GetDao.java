@@ -1,9 +1,6 @@
 package com.movieproject.dao;
 
-import com.movieproject.bean.Comment;
-import com.movieproject.bean.Event;
-import com.movieproject.bean.Movie;
-import com.movieproject.bean.User;
+import com.movieproject.bean.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -124,7 +121,7 @@ public class GetDao extends JdbcDaoSupport {
         });
     }
 
-    public List<String> getMovieActors(String title) {
+    public List<Actor> getMovieActors(String title) {
         //@formatter:off
         String sql = "SELECT ma.actor                  " +
                      "  FROM movie_actors ma, movies m " +
@@ -135,7 +132,12 @@ public class GetDao extends JdbcDaoSupport {
 
         final SqlParameterSource sp = new MapSqlParameterSource()
                 .addValue("title", title);
-        return namedTemplate.query(sql, sp, (r, i) -> r.getString("actor"));
+        return namedTemplate.query(sql, sp, (r, i) -> {
+            Actor actor = new Actor();
+            actor.setRealName(r.getString("realName"));
+            actor.setRoleName(r.getString("roleName"));
+            return actor;
+        });
     }
 
     public List<String> getMovieMainActors(String title) {

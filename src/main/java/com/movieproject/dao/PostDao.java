@@ -1,5 +1,6 @@
 package com.movieproject.dao;
 
+import com.movieproject.bean.Actor;
 import com.movieproject.bean.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -186,12 +187,13 @@ public class PostDao {
 //        return namedTemplate.update(sql, paramMap);
 //    }
 
-    public int addMovieActor(String actor, Integer movie_id) {
-        final String sql = "INSERT INTO  movie_actors (actor, movie_id)           "
-                + " VALUES (:actor, :movie_id) ";
+    public int addMovieActor(Actor actor, Integer movie_id) {
+        final String sql = "INSERT INTO  movie_actors (realName, movie_id, roleName)           "
+                + " VALUES (:realName, :movie_id, :roleName) ";
         MapSqlParameterSource paramMap = new MapSqlParameterSource()
-                .addValue("actor", actor)
-                .addValue("movie_id", movie_id);
+                .addValue("realName", actor.getRealName())
+                .addValue("movie_id", movie_id)
+                .addValue("roleName", actor.getRoleName());
         return namedTemplate.update(sql, paramMap);
     }
 

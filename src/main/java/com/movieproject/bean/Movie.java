@@ -5,7 +5,7 @@ import java.util.List;
 public class Movie {
     private Integer movie_id;
     private String category;
-    private List<String> actors;
+    private List<Actor> actors;
     private String director;
     private String music;
     private String title;
@@ -49,11 +49,11 @@ public class Movie {
         this.category = category;
     }
 
-    public List<String> getActors() {
+    public List<Actor> getActors() {
         return actors;
     }
 
-    public void setActors(List<String> actors) {
+    public void setActors(List<Actor> actors) {
         this.actors = actors;
     }
 

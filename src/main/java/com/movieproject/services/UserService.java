@@ -60,7 +60,7 @@ public class UserService {
 
 	public List<Movie> getAllMovies() {
 		List<Movie> movieList = getDao.getAllMovies();
-		List<String> actors;
+		List<Actor> actors;
 		List<String> mainActors;
 		List<String> awards;
 		List<Comment> comments;
@@ -92,7 +92,7 @@ public class UserService {
 		List<Movie> l = getDao.getMovieInfo(movie_id);
 		if (!l.isEmpty()) {
 			Movie m = l.get(0);
-			List<String> actors = getDao.getMovieActors(m.getTitle());
+			List<Actor> actors = getDao.getMovieActors(m.getTitle());
 			m.setActors(actors);
 			List<String> mainActors = getDao.getMovieMainActors(m.getTitle());
 			m.setMainActors(mainActors);
@@ -231,10 +231,10 @@ public class UserService {
 //	}
 
 	private void addActors(Movie movie) {
-		List<String> actors = movie.getActors();
+		List<Actor> actors = movie.getActors();
 		if (actors.isEmpty())
 			return;
-		for (String actor : actors) {
+		for (Actor actor : actors) {
 			postDao.addMovieActor(actor, movie.getMovie_id());
 		}
 	}
