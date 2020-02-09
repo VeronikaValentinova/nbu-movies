@@ -1,9 +1,6 @@
 package com.movieproject;
 
-import com.movieproject.bean.Comment;
-import com.movieproject.bean.Event;
-import com.movieproject.bean.Movie;
-import com.movieproject.bean.User;
+import com.movieproject.bean.*;
 import com.movieproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -257,4 +254,23 @@ public class Controller {
 	public ResponseEntity<String> addEvent(@RequestHeader("Authorization") String token, @RequestParam Event event) {
 		return userService.addEvent(event, token);
 	}
+
+	@PostMapping("/home/movies/movie/del") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> deleteMovie(@RequestParam Integer movie_id) {
+		return userService.deleteMovie(movie_id);
+	}
+
+	@PostMapping("/home/movies/movie/actor/del") //NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> deleteActor(@RequestParam Integer movie_id, @RequestParam Integer id) {
+		return userService.deleteActor(movie_id, id);
+	}
+
+	@PostMapping("/home/movies/movie/actor/add") //NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> addActor(@RequestBody Actor actor) {
+		return userService.addActor(actor);
+	}
+
 }

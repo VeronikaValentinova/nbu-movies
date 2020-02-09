@@ -411,4 +411,31 @@ public class UserService {
 			return null;
 		return getDao.getEventsPerUser(userId);
 	}
+
+	public ResponseEntity<String> deleteMovie(Integer movie_id) {
+		if (postDao.deleteMovie(movie_id) == 1) {
+			postDao.deleteComments(movie_id);
+			postDao.deleteKeywords(movie_id);
+			postDao.deleteActors(movie_id);
+			postDao.deleteAwards(movie_id);
+			postDao.deleteMainActors(movie_id);
+			postDao.deleteRatings(movie_id);
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<String> deleteActor(Integer movie_id, Integer actor_id) {
+		if (postDao.deleteActor(movie_id, actor_id) == 1) {
+			postDao.deleteMainActor(movie_id, actor_id); // if actor is a main actor at all
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<String> addActor(Actor actor) {
+		if (postDao.addActor(actor) == 1)
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
 }

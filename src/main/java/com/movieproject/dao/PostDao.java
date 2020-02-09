@@ -34,7 +34,7 @@ public class PostDao {
                 ":Description, :rating, :trailer, :language, :country, :imdbrating, :poster, :countryOfShooting, :duration)";
 
         String date = m.getDateOfCreation();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
         java.util.Date dt = null;
         try {
             dt = sdf.parse(date);
@@ -269,6 +269,80 @@ public class PostDao {
                 .addValue("user_id", userId)
                 .addValue("date", event.getDate())
                 .addValue("place", event.getPlace());
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteMovie(Integer movie_id) {
+        final String sql = "DELETE FROM movies WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteComments(Integer movie_id) {
+        final String sql = "DELETE FROM movie_comments WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteKeywords(Integer movie_id) {
+        final String sql = "DELETE FROM movie_keywords WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteActors(Integer movie_id) {
+        final String sql = "DELETE FROM movie_actors WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteAwards(Integer movie_id) {
+        final String sql = "DELETE FROM movie_awards WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteMainActors(Integer movie_id) {
+        final String sql = "DELETE FROM movie_mainactors WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteRatings(Integer movie_id) {
+        final String sql = "DELETE FROM movie_ratings WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteActor(Integer movie_id, Integer actor_id) {
+        final String sql = "DELETE FROM movie_actors WHERE movie_id = :id AND id = :actorId";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id)
+                .addValue("actorId", actor_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int deleteMainActor(Integer movie_id, Integer actor_id) {
+        final String sql = "DELETE FROM movie_mainactors WHERE movie_id = :id AND id = :actorId";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id)
+                .addValue("actorId", actor_id);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int addActor(Actor actor) {
+        final String sql = "INSERT INTO movie_actors (realName, movie_id, roleName) VALUES (:realName, :movie_id, :roleName)";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("realName", actor.getRealName())
+                .addValue("movie_id", actor.getMovie_id())
+                .addValue("roleName", actor.getRoleName());
         return namedTemplate.update(sql, paramMap);
     }
 }
