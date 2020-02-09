@@ -1,6 +1,7 @@
 package com.movieproject.bean;
 
 public class Festival {
+    private Integer id;
     private String name;
     private String startDate;
     private String endDate;
@@ -8,6 +9,14 @@ public class Festival {
     private String description;
     private String link;
     private String url;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
