@@ -524,6 +524,23 @@ public class GetDao extends JdbcDaoSupport {
         });
     }
 
+    public List<ConfirmationToken> getConfirmationToken(String token) {
+        //@formatter:off
+        String sql = "SELECT user_email " +
+                " FROM confirmation_token " +
+                "WHERE confirmation_token = :confirmation_token; ";
+        //@formatter:on
+
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("confirmation_token", token);
+        return namedTemplate.query(sql, sp, (r, i) ->
+        {
+            ConfirmationToken ct = new ConfirmationToken();
+            ct.setEmail(r.getString("user_email"));
+            return ct;
+        });
+    }
+
     public List<Event> getEventsPerUser(Integer userId) {
         final String sql = "SELECT e.event_id, e.movie_id, e.user_id, e.date, e.place, m.title" +
                 " FROM events e, movies m " +

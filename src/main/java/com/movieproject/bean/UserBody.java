@@ -4,6 +4,9 @@ public class UserBody {
     private String email;
     private String password;
 
+    public UserBody(){};
+    public UserBody(String email,String password){this.email=email;this.password=password;};
+
     public String getEmail() {
         return email;
     }

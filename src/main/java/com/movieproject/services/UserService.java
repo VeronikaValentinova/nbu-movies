@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,9 @@ public class UserService {
 
 	@Autowired
 	SecurityService securityService;
+
+	@Autowired
+	EmailSenderService emailSenderService;
 
 	private final GetDao getDao;
 	private final PostDao postDao;
@@ -162,6 +166,19 @@ public class UserService {
 		List<String> l1 =  getDao.checkFreeUserByUsername(username);
 		if (l1.isEmpty() && l.isEmpty()) {
 			postDao.saveUser(email, pass, username);
+			UserBody userBody;
+			userBody = new UserBody(email,pass);
+			ConfirmationToken ct = new ConfirmationToken(userBody);
+			postDao.saveConfirmationToken(ct);
+
+			SimpleMailMessage mailMessage = new SimpleMailMessage();
+			mailMessage.setTo(userBody.getEmail());
+			mailMessage.setSubject("Complete Registration!");
+			mailMessage.setFrom("movieprojectnbu@gmail.com");
+			mailMessage.setText("To confirm your account, please click here : "
+					+"http://localhost:4200/confirm-account?token="+ct.getConfirmationToken());
+
+			emailSenderService.sendEmail(mailMessage);
 			List<Integer> latestUserId = getDao.getMostRecentUserId();
 			int id = 0;
 			if (!latestUserId.isEmpty())
@@ -394,6 +411,17 @@ public class UserService {
 		if (userId == null)
 			return null;
 		return getDao.getMoviesAddedByUser(userId);
+	}
+
+	public ResponseEntity<String> confirmUserAccount(String ct) {
+		ConfirmationToken token = getDao.getConfirmationToken(ct).get(0);
+
+		if(token.getEmail()!=null)
+		{
+			postDao.changeUserActive(token.getEmail());
+			return ResponseEntity.status(HttpStatus.OK).body("User account activated !");
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).body("Failed at activation!");
 	}
 
 	public ResponseEntity<String> addEvent(Event event, String token) {

@@ -2,6 +2,7 @@ package com.movieproject.dao;
 
 import com.movieproject.bean.Actor;
 import com.movieproject.bean.Event;
+import com.movieproject.bean.ConfirmationToken;
 import com.movieproject.bean.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -343,6 +344,29 @@ public class PostDao {
                 .addValue("realName", actor.getRealName())
                 .addValue("movie_id", actor.getMovie_id())
                 .addValue("roleName", actor.getRoleName());
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int saveConfirmationToken(ConfirmationToken ct) {
+        //@formatter:off
+        final String sql = "INSERT INTO  confirmation_token (confirmation_token, created_date, user_email) "
+                + " values (:confirmation_token, :created_date, :user_email);";
+        //@formatter:on
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("confirmation_token", ct.getConfirmationToken())
+                .addValue("created_date", ct.getCreatedDate())
+                .addValue("user_email", ct.getUser().getEmail());
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int changeUserActive(String email) {
+        //@formatter:off
+        final String sql = " UPDATE user " +
+                " SET active = 1 " +
+                " WHERE email=:email ";
+        //@formatter:on
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("email", email);
         return namedTemplate.update(sql, paramMap);
     }
 }
