@@ -3,6 +3,7 @@ package com.movieproject;
 import com.movieproject.bean.Comment;
 import com.movieproject.bean.Event;
 import com.movieproject.bean.Movie;
+import com.movieproject.bean.User;
 import com.movieproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -116,6 +117,12 @@ public class Controller {
 		return userService.isMovieInUserWatchedlist(movie_id, token);
 	}
 
+	@GetMapping("/home/user") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public User getUserInfo(@RequestParam String name) {
+		return userService.getUserInfo(name);
+	}
+
 
 	/*****************************************************************************
 	 *
@@ -220,5 +227,17 @@ public class Controller {
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
 	public ResponseEntity<String> restoreMovie(@RequestParam Integer movie_id) {
 		return userService.archiveOrRestoreMovie(movie_id, 0);
+	}
+
+	@PostMapping("/home/users/user/rate") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> rateUser(@RequestParam Integer user_id, @RequestParam Integer rating) {
+		return userService.rateUser(user_id, rating);
+	}
+
+	@PostMapping("/home/movies/movie/rate") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> rateMovie(@RequestParam Integer movie_id, @RequestParam Integer rating) {
+		return userService.rateMovie(movie_id, rating);
 	}
 }

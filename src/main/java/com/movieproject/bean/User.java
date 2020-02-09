@@ -9,6 +9,7 @@ public class User {
     private String name;
     private String role;
     private String token;
+    private Integer userRating;
 
     @Bean
     public String getName() {
@@ -48,5 +49,15 @@ public class User {
     @Bean
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Bean
+    public Integer getUserRating() {
+        return userRating;
+    }
+
+    @Bean
+    public void setUserRating(Integer userRating) {
+        this.userRating = userRating;
     }
 }

@@ -226,4 +226,36 @@ public class PostDao {
                 .addValue("id", movie_id);
         return namedTemplate.update(sql, paramMap);
     }
+
+    public int rateMovie(Integer movie_id, Integer rating) {
+        final String sql = "INSERT INTO movie_ratings (movie_id, rating) VALUES (:movie_id, :rating)";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("movie_id", movie_id)
+                .addValue("rating", rating);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int rateUser(Integer user_id, Integer rating) {
+        final String sql = "INSERT INTO user_ratings (user_id, rating) VALUES (:user_id, :rating)";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("user_id", user_id)
+                .addValue("rating", rating);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int updateAverageMovieRating(Integer avg, Integer movie_id) {
+        final String sql = "UPDATE movies SET rating = :rating WHERE movie_id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", movie_id)
+                .addValue("rating", avg);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int updateAverageUserRating(Integer avg, Integer user_id) {
+        final String sql = "UPDATE user SET userRating = :rating WHERE id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("id", user_id)
+                .addValue("rating", avg);
+        return namedTemplate.update(sql, paramMap);
+    }
 }

@@ -349,4 +349,42 @@ public class UserService {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
+
+	public User getUserInfo(String name) {
+		List<User> getUserInfo = getDao.getUserInfo(name);
+		if (!getUserInfo.isEmpty())
+			return getUserInfo.get(0);
+		return null;
+	}
+
+	public ResponseEntity<String> rateMovie(Integer movie_id, Integer rating) {
+		if (postDao.rateMovie(movie_id, rating) == 1) {
+			List<Integer> currentMovieRatings = getDao.getMovieRatings(movie_id);
+			if (!currentMovieRatings.isEmpty()) {
+				Integer sum = 0;
+				for (Integer i : currentMovieRatings) {
+					sum += i;
+				}
+				Integer avg = sum/currentMovieRatings.size();
+				postDao.updateAverageMovieRating(avg, movie_id);
+			}
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public ResponseEntity<String> rateUser(Integer user_id, Integer rating) {
+		if (postDao.rateUser(user_id, rating) == 1) {
+			List<Integer> currentUserRatings = getDao.getUserRatings(user_id);
+			if (!currentUserRatings.isEmpty()) {
+				Integer sum = 0;
+				for (Integer i : currentUserRatings) {
+					sum += i;
+				}
+				Integer avg = sum/currentUserRatings.size();
+				postDao.updateAverageUserRating(avg, user_id);
+			}
+			return ResponseEntity.status(HttpStatus.OK).build();		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
 }

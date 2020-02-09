@@ -447,4 +447,32 @@ public class GetDao extends JdbcDaoSupport {
 
         return namedTemplate.query(sql, sp, (r, i) -> r.getString("username"));
     }
+
+    public List<User> getUserInfo(String name) {
+        final String sql = "SELECT username, user_id, userRating FROM user WHERE username = :name";
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("name", name);
+
+        return namedTemplate.query(sql, sp, (r, i) -> {
+            User user = new User();
+            user.setName(r.getString("username"));
+            user.setId(r.getInt("id"));
+            user.setUserRating(r.getInt("userRating"));
+            return user;
+        });
+    }
+
+    public List<Integer> getMovieRatings(Integer id) {
+        final String sql = "SELECT rating FROM movie_ratings WHERE movie_id = :id";
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("id", id);
+        return namedTemplate.query(sql, sp, (r, i) -> r.getInt("rating"));
+    }
+
+    public List<Integer> getUserRatings(Integer id) {
+        final String sql = "SELECT rating FROM user_ratings WHERE user_id = :id";
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("id", id);
+        return namedTemplate.query(sql, sp, (r, i) -> r.getInt("rating"));
+    }
 }
