@@ -179,7 +179,7 @@ public class UserService {
 			mailMessage.setSubject("Complete Registration!");
 			mailMessage.setFrom("movieprojectnbu@gmail.com");
 			mailMessage.setText("To confirm your account, please click here : "
-					+"http://localhost:4200/confirm-account?token="+ct.getConfirmationToken());
+					+"http://localhost:8080/confirm-account?token="+ct.getConfirmationToken());
 
 			emailSenderService.sendEmail(mailMessage);
 			List<Integer> latestUserId = getDao.getMostRecentUserId();

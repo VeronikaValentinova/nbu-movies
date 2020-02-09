@@ -20,16 +20,15 @@ public class Controller {
 	UserService userService;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestParam("email") @Valid String email, @RequestParam("password") String pass, @RequestParam("token") String confirmationToken) {
-		userService.confirmUserAccount(confirmationToken);
+	public ResponseEntity<?> login(@RequestParam("email") @Valid String email, @RequestParam("password") String pass) {
 		return userService.login(email, pass);
 	}
 
-//	@RequestMapping(value = "/confirm-account", method = {RequestMethod.GET, RequestMethod.POST})
-//	public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken)
-//	{
-//		return userService.confirmUserAccount(confirmationToken);
-//	}
+	@RequestMapping(value = "/confirm-account", method = {RequestMethod.GET, RequestMethod.POST})
+	public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken)
+	{
+		return userService.confirmUserAccount(confirmationToken);
+	}
 
 	@GetMapping("/home/movies")
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
