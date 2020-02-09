@@ -572,4 +572,21 @@ public class GetDao extends JdbcDaoSupport {
             return event;
         });
     }
+
+    public List<Festival> getFestivals() {
+        final String sql = "SELECT *" +
+                " FROM festivals" +
+                "ORDER BY id";
+        return namedTemplate.query(sql, new MapSqlParameterSource(), (r, i) -> {
+            Festival f = new Festival();
+            f.setName("name");
+            f.setDescription("description");
+            f.setEndDate("endDate");
+            f.setStartDate("startDate");
+            f.setLink("link");
+            f.setUrl("url");
+            f.setPlace("place");
+            return f;
+        });
+    }
 }

@@ -138,6 +138,12 @@ public class Controller {
 		return userService.getEventsPerUser(token);
 	}
 
+	@GetMapping("/home/festivals") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public List<Festival> getFestivals(@RequestHeader("Authorization") String token) {
+		return userService.getFestivals(token);
+	}
+
 	/*****************************************************************************
 	 *
 	 *                          UPDATE / INSERT in DB

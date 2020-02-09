@@ -469,4 +469,8 @@ public class UserService {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
+
+	public List<Festival> getFestivals(String token) {
+		return getDao.getFestivals();
+	}
 }
