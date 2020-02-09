@@ -360,15 +360,16 @@ public class UserService {
 	public ResponseEntity<String> rateMovie(Integer movie_id, Integer rating) {
 		if (postDao.rateMovie(movie_id, rating) == 1) {
 			List<Integer> currentMovieRatings = getDao.getMovieRatings(movie_id);
+			Integer avg = 0;
 			if (!currentMovieRatings.isEmpty()) {
 				Integer sum = 0;
 				for (Integer i : currentMovieRatings) {
 					sum += i;
 				}
-				Integer avg = sum/currentMovieRatings.size();
+				avg = sum/currentMovieRatings.size();
 				postDao.updateAverageMovieRating(avg, movie_id);
 			}
-			return ResponseEntity.status(HttpStatus.OK).build();
+			return ResponseEntity.status(HttpStatus.OK).body(String.valueOf(avg));
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
