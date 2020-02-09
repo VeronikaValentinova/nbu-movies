@@ -43,7 +43,10 @@ public class UserService {
 
 		if (!usList.isEmpty()) {
 			User user = usList.get(0);
-
+			List<Integer> active = getDao.checkActiveUser(user.getId());
+			if(active.isEmpty() || active.get(0) == 0){
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Account not activated !");
+			}
 			user.setToken("Bearer " + securityService.generateToken());
 			System.out.println(user.getToken());
 			SecurityService.users.add(user);

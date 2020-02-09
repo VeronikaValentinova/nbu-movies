@@ -541,6 +541,18 @@ public class GetDao extends JdbcDaoSupport {
         });
     }
 
+    public List<Integer> checkActiveUser(Integer id) {
+        //@formatter:off
+        String sql = "SELECT active " +
+                " FROM user " +
+                "WHERE id = :id; ";
+        //@formatter:on
+
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("id", id);
+        return namedTemplate.query(sql, sp, (r, i) -> r.getInt("active"));
+    }
+
     public List<Event> getEventsPerUser(Integer userId) {
         final String sql = "SELECT e.event_id, e.movie_id, e.user_id, e.date, e.place, m.title" +
                 " FROM events e, movies m " +
