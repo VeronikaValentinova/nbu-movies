@@ -263,7 +263,7 @@ public class Controller {
 
 	@PostMapping("/home/events/add") // NEW
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
-	public ResponseEntity<String> addEvent(@RequestHeader("Authorization") String token, @RequestParam Event event) {
+	public ResponseEntity<String> addEvent(@RequestHeader("Authorization") String token, @RequestBody Event event) {
 		return userService.addEvent(event, token);
 	}
 
