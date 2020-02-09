@@ -523,4 +523,24 @@ public class GetDao extends JdbcDaoSupport {
             return m;
         });
     }
+
+    public List<Event> getEventsPerUser(Integer userId) {
+        final String sql = "SELECT e.event_id, e.movie_id, e.user_id, e.date, e.place, m.title" +
+                " FROM events e, movies m " +
+                "WHERE е.user_id = :id" +
+                " AND e.movie_id = m.movie_id" +
+                " ORDER BY event_id ";
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("id", userId);
+        return namedTemplate.query(sql, sp, (r, i) -> {
+            Event event = new Event();
+            event.setDate(r.getString("date"));
+            event.setEvent_id(r.getInt("event_id"));
+            event.setMovie_id(r.getInt("movie_id"));
+            event.setName(r.getString("title"));
+            event.setUser_id(r.getInt("user_id"));
+            event.setPlace(r.getString("place"));
+            return event;
+        });
+    }
 }

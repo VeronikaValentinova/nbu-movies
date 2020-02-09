@@ -1,6 +1,7 @@
 package com.movieproject.dao;
 
 import com.movieproject.bean.Actor;
+import com.movieproject.bean.Event;
 import com.movieproject.bean.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -258,6 +259,16 @@ public class PostDao {
         MapSqlParameterSource paramMap = new MapSqlParameterSource()
                 .addValue("id", user_id)
                 .addValue("rating", avg);
+        return namedTemplate.update(sql, paramMap);
+    }
+
+    public int addEvent(Event event, Integer userId) {
+        final String sql = "INSERT INTO events (movie_id, user_id, date, place) VALUES (:movie_id, :user_id, :date, :place)";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("movie_id", event.getMovie_id())
+                .addValue("user_id", userId)
+                .addValue("date", event.getDate())
+                .addValue("place", event.getPlace());
         return namedTemplate.update(sql, paramMap);
     }
 }

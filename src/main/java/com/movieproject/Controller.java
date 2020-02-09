@@ -129,6 +129,12 @@ public class Controller {
 		return userService.getMoviesAddedByUser(token);
 	}
 
+	@GetMapping("/home/user/events") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public List<Event> getEventsPerUser(@RequestHeader("Authorization") String token) {
+		return userService.getEventsPerUser(token);
+	}
+
 	/*****************************************************************************
 	 *
 	 *                          UPDATE / INSERT in DB
@@ -244,5 +250,11 @@ public class Controller {
 	@PreAuthorize(("@securityService.hasAccess(#token)"))
 	public ResponseEntity<String> rateMovie(@RequestParam Integer movie_id, @RequestParam Integer rating) {
 		return userService.rateMovie(movie_id, rating);
+	}
+
+	@PostMapping("/home/events/add") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public ResponseEntity<String> addEvent(@RequestHeader("Authorization") String token, @RequestParam Event event) {
+		return userService.addEvent(event, token);
 	}
 }

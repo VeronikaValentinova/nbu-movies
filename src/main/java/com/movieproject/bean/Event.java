@@ -7,6 +7,7 @@ import java.util.List;
 public class Event {
     private Integer event_id;
     private Integer user_id;
+    private Integer movie_id;
     private String name;
     private String date;
     private String place;
@@ -59,5 +60,13 @@ public class Event {
 
     public void setParticipants(List<User> participants) {
         this.participants = participants;
+    }
+
+    public Integer getMovie_id() {
+        return movie_id;
+    }
+
+    public void setMovie_id(Integer movie_id) {
+        this.movie_id = movie_id;
     }
 }

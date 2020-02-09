@@ -395,4 +395,20 @@ public class UserService {
 			return null;
 		return getDao.getMoviesAddedByUser(userId);
 	}
+
+	public ResponseEntity<String> addEvent(Event event, String token) {
+		Integer userId = securityService.getUserId(token);
+		if (event == null || userId == null)
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		if (postDao.addEvent(event, userId) == 1)
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	}
+
+	public List<Event> getEventsPerUser(String token) {
+		Integer userId = securityService.getUserId(token);
+		if (userId == null)
+			return null;
+		return getDao.getEventsPerUser(userId);
+	}
 }
