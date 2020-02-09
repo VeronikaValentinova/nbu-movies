@@ -295,13 +295,13 @@ public class UserService {
 
 
 	public ResponseEntity<String> removeMovieFromWatchedList(String token, Integer movie_id) {
-		if (postDao.removeMovieFromWatchedList(movie_id) == 1)
+		if (postDao.removeMovieFromWatchedList(movie_id) > 0)
 			return ResponseEntity.status(HttpStatus.OK).build();
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
 
 	public ResponseEntity<String> removeMovieFromWishList(String token, Integer movie_id) {
-		if (postDao.removeMovieFromWishList(movie_id) == 1)
+		if (postDao.removeMovieFromWishList(movie_id) > 0)
 			return ResponseEntity.status(HttpStatus.OK).build();
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
@@ -309,15 +309,15 @@ public class UserService {
 	public ResponseEntity<Integer> isMovieInUserWishlist(Integer movieId, String token) {
 		Integer userId = securityService.getUserId(token);
 		if (!getDao.isMovieInUserWishlist(movieId, userId).isEmpty())
-			return ResponseEntity.status(HttpStatus.OK).build();
-		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.OK).body(1);
+		return ResponseEntity.status(HttpStatus.OK).body(0);
 	}
 
 	public ResponseEntity<Integer> isMovieInUserWatchedlist(Integer movieId, String token) {
 		Integer userId = securityService.getUserId(token);
 		if (!getDao.isMovieInUserWatchedlist(movieId, userId).isEmpty())
-			return ResponseEntity.status(HttpStatus.OK).build();
-		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.OK).body(1);
+		return ResponseEntity.status(HttpStatus.OK).body(0);
 	}
 
 	public ResponseEntity<String> changePassword(String token, String password) {

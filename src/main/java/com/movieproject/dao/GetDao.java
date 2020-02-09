@@ -123,7 +123,7 @@ public class GetDao extends JdbcDaoSupport {
 
     public List<Actor> getMovieActors(String title) {
         //@formatter:off
-        String sql = "SELECT ma.actor                  " +
+        String sql = "SELECT ma.realName, ma.roleName                  " +
                      "  FROM movie_actors ma, movies m " +
                      " WHERE 1 = 1                     " +
                      "   AND m.movie_id = ma.movie_id  " +
