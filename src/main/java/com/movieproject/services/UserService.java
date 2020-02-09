@@ -388,4 +388,11 @@ public class UserService {
 			return ResponseEntity.status(HttpStatus.OK).build();		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
+
+	public List<Movie> getMoviesAddedByUser(String token) {
+		Integer userId = securityService.getUserId(token);
+		if (userId == null)
+			return null;
+		return getDao.getMoviesAddedByUser(userId);
+	}
 }

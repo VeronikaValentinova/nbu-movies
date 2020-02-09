@@ -123,6 +123,11 @@ public class Controller {
 		return userService.getUserInfo(name);
 	}
 
+	@GetMapping("/home/user/movies") // NEW
+	@PreAuthorize(("@securityService.hasAccess(#token)"))
+	public List<Movie> getMoviesAddedByUser(@RequestHeader("Authorization") String token) {
+		return userService.getMoviesAddedByUser(token);
+	}
 
 	/*****************************************************************************
 	 *

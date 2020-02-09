@@ -477,4 +477,50 @@ public class GetDao extends JdbcDaoSupport {
                 .addValue("id", id);
         return namedTemplate.query(sql, sp, (r, i) -> r.getInt("rating"));
     }
+
+    public List<Movie> getMoviesAddedByUser(Integer user_id) {
+        final String sql = "SELECT movie_id          " +
+                "     , category          " +
+                "     , director          " +
+                "     , music             " +
+                "     , title             " +
+                "     , dateOfCreation    " +
+                "     , studio            " +
+                "     , description       " +
+                "     , rating            " +
+                "     , poster            " +
+                "     , trailer           " +
+                "     , country           " +
+                "     , imdbrating        " +
+                "     , language          " +
+                "     , countryOfShooting " +
+                "     , duration          " +
+                "  FROM movies           " +
+                "WHERE added_by = :id " +
+                "ORDER BY dateOfCreation DESC";
+
+        final SqlParameterSource sp = new MapSqlParameterSource()
+                .addValue("id", user_id);
+
+        return namedTemplate.query(sql, sp, (r, i) -> {
+            Movie m = new Movie();
+            m.setMovie_id(r.getInt("movie_id"));
+            m.setCategory(r.getString("category"));
+            m.setDirector(r.getString("director"));
+            m.setMusic(r.getString("music"));
+            m.setTitle(r.getString("title"));
+            m.setDateOfCreation(r.getString("dateOfCreation"));
+            m.setStudio(r.getString("studio"));
+            m.setDescription(r.getString("description"));
+            m.setRating(r.getString("rating"));
+            m.setPoster(r.getString("poster"));
+            m.setTrailer(r.getString("trailer"));
+            m.setCountry(r.getString("country"));
+            m.setImdbRating(r.getInt("imdbrating"));
+            m.setLanguage(r.getString("language"));
+            m.setLanguage(r.getString("countryOfShooting"));
+            m.setLanguage(r.getString("duration"));
+            return m;
+        });
+    }
 }
