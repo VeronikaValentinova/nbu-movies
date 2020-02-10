@@ -474,4 +474,12 @@ public class UserService {
 	public List<Festival> getFestivals(String token) {
 		return getDao.getFestivals();
 	}
+
+	public ResponseEntity<String> changeUsername(String token, String username) {
+		Integer userId = securityService.getUserId(token);
+		if (postDao.changeUsername(userId, username) == 1)
+			return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+	}
 }

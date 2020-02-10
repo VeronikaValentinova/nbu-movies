@@ -285,4 +285,10 @@ public class Controller {
 		return userService.addActor(actor);
 	}
 
+    @PostMapping("/home/users/user/changeusername") // NEW
+    @PreAuthorize(("@securityService.hasAccess(#token)"))
+    public ResponseEntity<String> changeUsername(@RequestHeader("Authorization") String token, @RequestParam String username) {
+        return userService.changeUsername(token, username);
+    }
+
 }

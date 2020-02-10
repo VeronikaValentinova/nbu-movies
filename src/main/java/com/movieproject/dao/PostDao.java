@@ -369,4 +369,12 @@ public class PostDao {
                 .addValue("email", email);
         return namedTemplate.update(sql, paramMap);
     }
+
+    public int changeUsername(Integer userId, String username) {
+        final String sql =  "UPDATE user SET username = :username WHERE id = :id";
+        MapSqlParameterSource paramMap = new MapSqlParameterSource()
+                .addValue("username", username)
+                .addValue("id", userId);
+        return namedTemplate.update(sql, paramMap);
+    }
 }
